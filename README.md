@@ -1,3 +1,6 @@
+issues: depending on your host configuration you are able to access data/settings/pages (default Pluck pages' dir) or not...
+
+
 Use as follows:
 
 1. Create folder data/themes/html5up-astral
