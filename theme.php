@@ -1,21 +1,18 @@
-<!DOCTYPE html>
+<?php //Make sure the file isn't accessed directly.
+defined('IN_PLUCK') or exit('Access denied!');
+?>
+
+<!-- THIS ONE IS PORTED THEME FROM ASTRAL HTML5up for PLUCK CMS -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html>
 <head>
     <meta charset="utf-8">
     <title><?php echo $title; ?> - <?php echo get_sitetitle(); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!--
-
-  This one is initial release 1.0 based on this: https://html5up.net/astral
-
-  Still some steps pending....
-
-  
-
-  -->
-  
-	<!-- schriften werden aus inet geladen, schriften in assets können gelöscht werden PROBLEME !!!!!!!!!!!! -->
+     
+	 <!-- schriften werden aus inet geladen, schriften in assets können gelöscht werden PROBLEME !!!!!!!!!!!! -->
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  -->
 	
     <!-- Astral Icon-Fonts liegen dann in assets !!! -->
@@ -32,17 +29,47 @@
 <!-- Wrapper -->
 <div id="wrapper">
 
-    <!-- Navigation -->
-    <nav id="nav">
-        <a href="#home" class="fa fa-home"><span>Startseite</span></a>
-        <a href="#page" class="fa fa-file"><span>Inhalt</span></a>
-        <a href="#kontakt" class="fa fa-envelope"><span>Kontakt</span></a>
-    </nav>
+<!-- dieses skript sorgt dafür, dass aus data-file die entsprechende Seite für pluck in die url übernommen wird
+und das hash aus main.js für panel active wie im original verbleibt  -->
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('#nav a').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const file = this.dataset.file;
+        const hash = this.getAttribute('href'); // z. B. "#kontakt"
+
+        if (file && hash) {
+          // Neue URL mit ?file=... und #...
+          const url = new URL(window.location.href);
+          url.searchParams.set('file', file);
+          url.hash = hash;
+
+          // Seite mit neuer URL neu laden
+          window.location.href = url.toString();
+        }
+      });
+    });
+  });
+</script>
+
+
+		<!-- <?php echo $title; ?>  funktionietr an dieser stelle nicht still todo-->
+
+	<nav id="nav">
+		<a href="#home" data-file="astral-home" class="fa fa-home"><span><?php echo $title; ?></span></a>
+		<a href="#page" data-file="astral-content" class="fa fa-file"><span><?php echo $title; ?></span></a>
+        	<a href="#kontakt" data-file="astral-contact" class="fa fa-envelope"><span><?php echo $title; ?></span></a>
+		
+    	</nav>
+
+	
     <!-- Main -->
     <div id="main">
         <!-- Erste sichtbare Seite -->
-        <article id="home" class="panel active">
+        <article id="home" class="panel">
             <header>
                 <h2><?php echo $title; ?></h2>
             </header>
@@ -52,22 +79,24 @@
             </section>
         </article>
 
-        <!-- Weitere statische Seiten, nur zur Veranschaulichung -->
         <article id="page" class="panel">
             <header>
-                <h2>Inhalt</h2>
+                <h2><?php echo $title; ?></h2>
             </header>
             <section>
-                <p>Hier könnte dein Seiteninhalt stehen.</p>
+                <?php theme_content(); ?>
+                <?php theme_area('main'); ?>
             </section>
         </article>
 
         <article id="kontakt" class="panel">
             <header>
-                <h2>Kontakt</h2>
+                <h2><?php echo $title; ?></h2>
             </header>
             <section>
-                <p>Deine Kontaktinformationen oder ein Formular.</p>
+		        <?php theme_content(); ?>
+                <?php theme_area('main'); ?>
+				
             </section>
         </article>
     </div>
@@ -88,4 +117,3 @@
 
 </body>
 </html>
-
